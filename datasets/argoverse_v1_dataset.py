@@ -19,6 +19,7 @@ from typing import Callable, Dict, List, Optional, Tuple, Union
 import numpy as np
 import pandas as pd
 import torch
+from pathlib import Path
 from argoverse.map_representation.map_api import ArgoverseMap
 from torch_geometric.data import Data
 from torch_geometric.data import Dataset
@@ -59,7 +60,9 @@ class ArgoverseV1Dataset(Dataset):
 
     @property
     def processed_dir(self) -> str:
-        return os.path.join(self.root, self._directory, 'processed')
+        dst = os.path.join(self.root, self._directory, 'processed')
+        Path(dst).mkdir(parents=True, exist_ok=True)
+        return dst
 
     @property
     def raw_file_names(self) -> Union[str, List[str], Tuple]:
@@ -74,7 +77,7 @@ class ArgoverseV1Dataset(Dataset):
         return self._processed_paths
 
     def process(self) -> None:
-        am = ArgoverseMap()
+        am = ArgoverseMap(root = os.path.join(self.root, "map_files"))
         for raw_path in tqdm(self.raw_paths):
             kwargs = process_argoverse(self._split, raw_path, am, self._local_radius)
             data = TemporalData(**kwargs)
