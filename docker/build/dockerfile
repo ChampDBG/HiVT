@@ -1,4 +1,4 @@
-FROM nvidia/cuda:11.1.1-cudnn8-devel-ubuntu20.04
+FROM nvidia/cuda:12.4.1-cudnn-devel-ubuntu20.04
 
 # update package key
 RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/3bf863cc.pub
@@ -12,16 +12,16 @@ RUN apt-get update \
 
 # Install miniconda
 ENV CONDA_DIR /opt/conda
-RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-py38_23.11.0-2-Linux-x86_64.sh -O ~/miniconda.sh && \
+RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-py39_24.9.2-0-Linux-x86_64.sh -O ~/miniconda.sh && \
     /bin/bash ~/miniconda.sh -b -p /opt/conda
 
 # Put conda in path so we can use conda activate
 ENV PATH=$CONDA_DIR/bin:$PATH
 
 # install from conda
-RUN conda install -y pytorch==1.8.0 cudatoolkit=11.1 -c pytorch -c conda-forge
-RUN conda install -y pytorch-geometric==1.7.2 -c rusty1s -c conda-forge
-RUN conda install -y pytorch-lightning==1.5.2 -c conda-forge
+RUN conda install -y pytorch==2.5.0 torchvision==0.20.0 torchaudio==2.5.0 pytorch-cuda=12.4 -c pytorch -c nvidia
+RUN conda install -y conda-forge::pytorch_geometric
+RUN conda install -y conda-forge::pytorch-lightning
 
 # system packages
 ENV TZ=US \
