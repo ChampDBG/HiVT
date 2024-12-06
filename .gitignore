@@ -111,3 +111,10 @@ venv.bak/
 # seed project
 lightning_logs/
 .DS_Store
+
+# dependencies
+argoverse-api/
+
+# utility shell scripts
+docker/*.sh
+entrypoint/
