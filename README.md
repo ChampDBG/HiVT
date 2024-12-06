@@ -37,6 +37,12 @@ conda install pytorch-lightning==1.5.2 -c conda-forge
 
 4\. Install [Argoverse 1 API](https://github.com/argoai/argoverse-api).
 
+### Install from Dockerfile
+```bash
+# Run from root of project
+docker build --build-arg username=[Your Username] --build-arg uid=[Your UID] -t hivt:test -f ./docker/build/dockerfile .
+``` 
+
 ## Training
 
 To train HiVT-64:
